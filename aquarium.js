@@ -24,3 +24,100 @@ var container = document.getElementById("canvasContainer");
 
 canvas.width = container.clientWidth;
 canvas.height = container.clientHeight;
+
+
+generateStemPlant();
+
+function generateStemPlant(){
+
+	context.strokeStyle = "#FFFFFF";
+	generateLeaf(500, 500, 0);
+
+	function generateLeaf(x, y, angle){
+
+		context.save();
+		context.translate(x, y);
+		context.rotate(angle);
+
+		var length = 100;
+		var spines = 50;
+		var roundness = 1;
+		var spineAngle = Math.PI*0.3;
+		//var spineAngle = Math.PI/2;
+
+		context.beginPath();
+		context.moveTo(0, 0);
+		context.lineTo(0, length);
+		context.stroke();
+
+		for(var i = 1; i < spines; i++){
+
+			var spineLength = Math.sqrt((i/spines) * (1-(i/spines)));
+			spineLength *= (length*roundness);
+			
+			context.save();
+			context.translate(0, (i/spines)*length);
+			context.rotate(spineAngle);
+			
+			context.beginPath();
+			context.moveTo(0, 0);
+			context.lineTo(0, spineLength);
+			context.stroke();
+
+			context.rotate(-2*spineAngle);
+			
+			context.beginPath();
+			context.moveTo(0, 0);
+			context.lineTo(0, spineLength);
+			context.stroke();
+
+			context.restore();
+		}
+
+		context.restore();
+		
+	}
+	
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
