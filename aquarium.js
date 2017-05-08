@@ -25,8 +25,143 @@ var container = document.getElementById("canvasContainer");
 canvas.width = container.clientWidth;
 canvas.height = container.clientHeight;
 
+var mouseX = canvas.width/2;
+var mouseY = canvas.height/2;
 
-generateStemPlant();
+var draggyLine = new DraggyLine();
+//draggyLine.render(Date.now());
+
+renderLoop();
+
+window.addEventListener("mousemove", function(e){
+	mouseX = e.clientX - container.offsetLeft;
+	mouseY = e.clientY - container.offsetTop;
+});
+
+function renderLoop(){
+	context.clearRect(0, 0, canvas.width, canvas.height);
+	draggyLine.render(Date.now());
+	requestAnimationFrame(renderLoop);
+}
+
+function DraggyLine(){
+
+	var points = [];
+	var pointCount = 500;
+	var targetLength = 2;
+
+	for(var i = 0; i <= pointCount; i++){
+		points.push([
+			 canvas.width/2
+			,canvas.height/2+i*targetLength
+		]);
+	}
+
+	function render(){
+		context.strokeStyle = "rgba(255, 255, 255, 0.8)";
+		context.beginPath();
+
+		var newPoints = [];
+		
+		var i = 0;
+		context.moveTo(
+			 mouseX
+			,mouseY
+		);
+
+		newPoints.push([mouseX, mouseY]);
+
+		for(var i = 1; i <= pointCount; i++){
+
+			var currentDist = Math.sqrt(Math.pow(points[i][0] - newPoints[i-1][0], 2) + Math.pow(points[i][1] - newPoints[i-1][1], 2));
+			var relative = targetLength/currentDist;
+
+			newPoints.push([
+				 newPoints[i-1][0] + (points[i][0] - newPoints[i-1][0])*relative
+				,newPoints[i-1][1] + (points[i][1] - newPoints[i-1][1])*relative
+			]);
+			
+			context.lineTo(
+				 newPoints[i][0]
+				,newPoints[i][1]
+			);
+		}
+
+		points = newPoints;
+
+		context.stroke();
+	}
+
+	return {
+		render: render
+	};
+	
+}
+
+/*var jellyfish = new Jellyfish();
+renderLoop();
+
+function renderLoop(){
+	context.clearRect(0, 0, canvas.width, canvas.height);
+	jellyfish.render(Date.now());
+	requestAnimationFrame(renderLoop);
+}
+
+function Jellyfish(){
+
+	var x = canvas.width/2;
+	var y = canvas.height/2;
+
+	var size = 100;
+
+	var angleSpan = 1.2*Math.PI;
+
+	var pointCount = 10;
+
+	var points = [];
+	
+	for(var i = 0; i <= pointCount; i++){
+		var p = (i / pointCount) * angleSpan - angleSpan/2 + Math.PI/2;
+		
+		points.push([Math.cos(p), Math.sin(p)]);
+	}
+
+	console.table(points);
+
+	function render(time){
+
+		var xFactor = Math.sin(time/1000)/2;
+		//var xFactor = 1;
+		var yFactor = 1-Math.sin(time/1000)/2;context.strokeStyle = "rgba(255, 255, 255, 0.8)";
+		context.beginPath();
+		context.moveTo(
+			 x + points[0][0]*size + points[0][0]*(1-points[0][1])*xFactor*size
+			,y - points[0][1]*size
+		);
+
+		for(var i = 1; i <= pointCount; i++){
+			context.lineTo(
+				 x + points[i][0]*size + points[i][0]*(1-points[i][1])*xFactor*size
+				,y - points[i][1]*size
+			);
+		}
+		context.closePath();
+
+		context.stroke();
+
+		
+		
+	}
+
+	return {
+		render: render
+	};
+	
+}
+
+*/
+
+/*generateStemPlant();
 
 function generateStemPlant(){
 
@@ -79,7 +214,7 @@ function generateStemPlant(){
 	}
 	
 }
-
+*/
 
 
 
