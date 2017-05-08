@@ -112,7 +112,7 @@ for(var i = 0; i < jellyfishCount; i++){
 		new Jellyfish(
 			 canvas.width*Math.random()
 			,canvas.height*Math.random()
-			,Math.random()*Math.PI - Math.PI/2
+			,Math.random()*Math.PI/2 - Math.PI/4
 			,Math.random()+0.1
 		)
 	);
@@ -136,6 +136,7 @@ function Jellyfish(startX, startY, direction, speed){
 
 	var angleSpan = 1.5*Math.PI;
 
+	//speed = 20;
 	speed = (1/speed)*(1000/(2*Math.PI));
 
 	var draggyLineCount = 11;
@@ -181,10 +182,21 @@ function Jellyfish(startX, startY, direction, speed){
 	function render(time){
 
 		y -= (size)*(0.3+Math.sin(time/speed+0.1)/2)/(speed/20);
+
+		var trueX = startX + Math.sin(direction)*(startY-y);
+		var trueY = startY - Math.cos(direction)*(startY-y);
+
+		if(trueX < 0-3*size || trueX > canvas.width + 3*size || trueY < 0-3*size || trueY > canvas.height + 6*size){
+			startX = Math.random() * canvas.width;
+			startY = canvas.height + 4*size;
+			x = startX;
+			y = startY;
+			direction = Math.random()*Math.PI/2 - Math.PI/4;
+		}
 		
-		context.strokeStyle = "rgba(255, 255, 255, 0.2)";
-		context.fillStyle = "rgba(150, 150, 150, 0.3)";
-		context.lineWidth = size/20;
+		context.strokeStyle = "rgba(100, 200, 255, 0.2)";
+		context.fillStyle = "rgba(100, 200, 255, 0.4)";
+		context.lineWidth = Math.max(size/10, 1);
 
 		context.save();
 		context.translate(startX, startY);
@@ -199,7 +211,11 @@ function Jellyfish(startX, startY, direction, speed){
 			);
 		}
 
-		context.strokeStyle = "rgba(255, 255, 255, 0.6)";
+		context.strokeStyle = "rgba(100, 200, 255, 0.5)";
+
+		/*context.beginPath()
+		context.arc(x, y, size/5, 0, 2*Math.PI);
+		context.stroke();*/
 		
 		context.beginPath();
 		var i = 0;
