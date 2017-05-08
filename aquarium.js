@@ -132,7 +132,7 @@ function Jellyfish(startX, startY, direction, speed){
 	var x = startX;
 	var y = startY;
 
-	var size = 5 + Math.random()*20;
+	var size = 5 + ~~(Math.random()*20);
 
 	var angleSpan = 1.5*Math.PI;
 
@@ -141,7 +141,7 @@ function Jellyfish(startX, startY, direction, speed){
 	var draggyLineCount = 11;
 	var draggyLineLength = size*2;
 
-	var pointCount = 30;
+	var pointCount = size;
 
 	var points = [];
 
@@ -158,14 +158,14 @@ function Jellyfish(startX, startY, direction, speed){
 
 	for(var i = 0; i <= draggyLineCount; i++){
 		var time = Date.now();
-		var lineX = getCurrentX(points.length-1, time) - (getCurrentX(points.length-1, time) - getCurrentX(0, time))*(i/draggyLineCount);
+		var lineX = getCurrentX(points.length-1, time) - (getCurrentX(points.length-1, time) - getCurrentX(0, time))*(Math.cos(Math.PI*i/draggyLineCount)/2+0.5);
 		draggyLines.push(
 			new DraggyLine(
 				 lineX
 				,getCurrentY(points.length-1, time)
 				,lineX
 				,getCurrentY(points.length-1, time)+draggyLineLength+Math.random()*(draggyLineLength*0.3)
-				,10
+				,size/3
 			)
 		);
 	}
@@ -184,6 +184,7 @@ function Jellyfish(startX, startY, direction, speed){
 		
 		context.strokeStyle = "rgba(255, 255, 255, 0.2)";
 		context.fillStyle = "rgba(150, 150, 150, 0.3)";
+		context.lineWidth = size/20;
 
 		context.save();
 		context.translate(startX, startY);
