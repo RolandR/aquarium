@@ -13,7 +13,7 @@
 	but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 	For more information, see:
-	https://draemm.li/various/euclideanSpanningTree/LICENSE
+	https://draemm.li/various/aquarium/LICENSE
 	
 	========================================================================
 */
@@ -112,8 +112,8 @@ for(var i = 0; i < jellyfishCount; i++){
 		new Jellyfish(
 			 canvas.width*Math.random()
 			,canvas.height*Math.random()
-			,Math.random()*Math.PI/2 - Math.PI/4
-			,Math.random()+0.1
+			,Math.random()*Math.PI/4 - Math.PI/8
+			,Math.random()*0.2+0.1
 		)
 	);
 }
@@ -172,7 +172,7 @@ function Jellyfish(startX, startY, direction, speed){
 	}
 
 	function getCurrentX(i, time){
-		return x + points[i][0] + points[i][0]*(1-points[i][1]/size)*(1-Math.sin(time/speed - 1*(1-points[i][1]/size))/2);
+		return x + points[i][0] + points[i][0]*Math.sqrt(1-points[i][1]/size)*(1-Math.sin(time/speed - 1.1*(1-points[i][1]/size))*0.5);
 	}
 
 	function getCurrentY(i, time){
@@ -181,7 +181,7 @@ function Jellyfish(startX, startY, direction, speed){
 
 	function render(time){
 
-		y -= (size)*(0.3+Math.sin(time/speed+0.1)/2)/(speed/20);
+		y -= (size)*(0.7+Math.sin(time/speed+0.3))/(speed/10);
 
 		var trueX = startX + Math.sin(direction)*(startY-y);
 		var trueY = startY - Math.cos(direction)*(startY-y);
@@ -191,7 +191,7 @@ function Jellyfish(startX, startY, direction, speed){
 			startY = canvas.height + 4*size;
 			x = startX;
 			y = startY;
-			direction = Math.random()*Math.PI/2 - Math.PI/4;
+			direction = Math.random()*Math.PI/4 - Math.PI/8;
 		}
 		
 		context.strokeStyle = "rgba(100, 200, 255, 0.2)";
