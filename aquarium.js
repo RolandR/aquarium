@@ -104,7 +104,7 @@ function DraggyLine(x, y, toX, toY, sections){
 	
 }
 
-var jellyfishCount = 20;
+var jellyfishCount = 70;
 var jellies = [];
 
 for(var i = 0; i < jellyfishCount; i++){
@@ -132,7 +132,7 @@ function Jellyfish(startX, startY, direction, speed){
 	var x = startX;
 	var y = startY;
 
-	var size = 5 + ~~(Math.random()*20);
+	var size = 5 + ~~(Math.pow(Math.random(), 6)*20);
 
 	var angleSpan = 1.5*Math.PI;
 
@@ -194,8 +194,10 @@ function Jellyfish(startX, startY, direction, speed){
 			direction = Math.random()*Math.PI/4 - Math.PI/8;
 		}
 		
-		context.strokeStyle = "rgba(100, 200, 255, 0.2)";
-		context.fillStyle = "rgba(100, 200, 255, 0.4)";
+		var a = (size-4)/21;
+		
+		context.strokeStyle = "rgba(100, 200, 255, "+(0.2*a)+")";
+		context.fillStyle = "rgba(100, 200, 255, "+(0.4*a)+")";
 		context.lineWidth = Math.max(size/10, 1);
 
 		context.save();
@@ -211,7 +213,7 @@ function Jellyfish(startX, startY, direction, speed){
 			);
 		}
 
-		context.strokeStyle = "rgba(100, 200, 255, 0.5)";
+		context.strokeStyle = "rgba(100, 200, 255, "+(0.5*a)+")";
 
 		/*context.beginPath()
 		context.arc(x, y, size/5, 0, 2*Math.PI);
