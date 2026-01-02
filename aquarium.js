@@ -13,7 +13,7 @@
 	but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 	For more information, see:
-	https://draemm.li/various/euclideanSpanningTree/LICENSE
+	https://draemm.li/p/aquarium/LICENSE
 	
 	========================================================================
 */
@@ -27,28 +27,6 @@ canvas.height = container.clientHeight;
 
 var mouseX = canvas.width/2;
 var mouseY = canvas.height/2;
-
-/*var draggyLine = new DraggyLine(
-	 canvas.width/2
-	,canvas.height/2
-	,canvas.width/2+100
-	,canvas.height/2+100
-	,10
-);*/
-//draggyLine.render(Date.now());
-
-//renderLoop();
-
-/*window.addEventListener("mousemove", function(e){
-	mouseX = e.clientX - container.offsetLeft;
-	mouseY = e.clientY - container.offsetTop;
-});*/
-
-/*function renderLoop(){
-	context.clearRect(0, 0, canvas.width, canvas.height);
-	draggyLine.render(mouseX, mouseY);
-	requestAnimationFrame(renderLoop);
-}*/
 
 function DraggyLine(x, y, toX, toY, sections){
 
@@ -104,7 +82,7 @@ function DraggyLine(x, y, toX, toY, sections){
 	
 }
 
-var jellyfishCount = 20;
+var jellyfishCount = 70;
 var jellies = [];
 
 for(var i = 0; i < jellyfishCount; i++){
@@ -112,8 +90,8 @@ for(var i = 0; i < jellyfishCount; i++){
 		new Jellyfish(
 			 canvas.width*Math.random()
 			,canvas.height*Math.random()
-			,Math.random()*Math.PI/2 - Math.PI/4
-			,Math.random()+0.1
+			,Math.random()*Math.PI/4 - Math.PI/8
+			,Math.random()*0.2+0.1
 		)
 	);
 }
@@ -132,7 +110,7 @@ function Jellyfish(startX, startY, direction, speed){
 	var x = startX;
 	var y = startY;
 
-	var size = 5 + ~~(Math.random()*20);
+	var size = 5 + ~~(Math.pow(Math.random(), 4)*20);
 
 	var angleSpan = 1.5*Math.PI;
 
@@ -172,7 +150,7 @@ function Jellyfish(startX, startY, direction, speed){
 	}
 
 	function getCurrentX(i, time){
-		return x + points[i][0] + points[i][0]*(1-points[i][1]/size)*(1-Math.sin(time/speed - 1*(1-points[i][1]/size))/2);
+		return x + points[i][0] + points[i][0]*Math.sqrt(1-points[i][1]/size)*(1-Math.sin(time/speed - 1.1*(1-points[i][1]/size))*0.5);
 	}
 
 	function getCurrentY(i, time){
@@ -181,7 +159,7 @@ function Jellyfish(startX, startY, direction, speed){
 
 	function render(time){
 
-		y -= (size)*(0.3+Math.sin(time/speed+0.1)/2)/(speed/20);
+		y -= (size)*(0.7+Math.sin(time/speed+0.3))/(speed/10);
 
 		var trueX = startX + Math.sin(direction)*(startY-y);
 		var trueY = startY - Math.cos(direction)*(startY-y);
@@ -191,11 +169,13 @@ function Jellyfish(startX, startY, direction, speed){
 			startY = canvas.height + 4*size;
 			x = startX;
 			y = startY;
-			direction = Math.random()*Math.PI/2 - Math.PI/4;
+			direction = Math.random()*Math.PI/4 - Math.PI/8;
 		}
 		
-		context.strokeStyle = "rgba(100, 200, 255, 0.2)";
-		context.fillStyle = "rgba(100, 200, 255, 0.4)";
+		var a = (size-4)/21;
+		
+		context.strokeStyle = "rgba(100, 200, 255, "+(0.2*a)+")";
+		context.fillStyle = "rgba(100, 200, 255, "+(0.4*a)+")";
 		context.lineWidth = Math.max(size/10, 1);
 
 		context.save();
@@ -211,11 +191,7 @@ function Jellyfish(startX, startY, direction, speed){
 			);
 		}
 
-		context.strokeStyle = "rgba(100, 200, 255, 0.5)";
-
-		/*context.beginPath()
-		context.arc(x, y, size/5, 0, 2*Math.PI);
-		context.stroke();*/
+		context.strokeStyle = "rgba(100, 200, 255, "+(0.5*a)+")";
 		
 		context.beginPath();
 		var i = 0;
@@ -244,69 +220,6 @@ function Jellyfish(startX, startY, direction, speed){
 	};
 	
 }
-
-
-
-/*generateStemPlant();
-
-function generateStemPlant(){
-
-	context.strokeStyle = "#FFFFFF";
-	generateLeaf(500, 500, 0);
-
-	function generateLeaf(x, y, angle){
-
-		context.save();
-		context.translate(x, y);
-		context.rotate(angle);
-
-		var length = 100;
-		var spines = 50;
-		var roundness = 1;
-		var spineAngle = Math.PI*0.3;
-		//var spineAngle = Math.PI/2;
-
-		context.beginPath();
-		context.moveTo(0, 0);
-		context.lineTo(0, length);
-		context.stroke();
-
-		for(var i = 1; i < spines; i++){
-
-			var spineLength = Math.sqrt((i/spines) * (1-(i/spines)));
-			spineLength *= (length*roundness);
-			
-			context.save();
-			context.translate(0, (i/spines)*length);
-			context.rotate(spineAngle);
-			
-			context.beginPath();
-			context.moveTo(0, 0);
-			context.lineTo(0, spineLength);
-			context.stroke();
-
-			context.rotate(-2*spineAngle);
-			
-			context.beginPath();
-			context.moveTo(0, 0);
-			context.lineTo(0, spineLength);
-			context.stroke();
-
-			context.restore();
-		}
-
-		context.restore();
-		
-	}
-	
-}
-*/
-
-
-
-
-
-
 
 
 
